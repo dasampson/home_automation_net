@@ -1,6 +1,5 @@
 # Raspberry Pi Sensor Project
 ---
----
 Driver code for the BMP085 and DHT22 sensors originated from Adafruit and has not been modified. For more information on setting up these sensors, please visit the Adafruit website. When properly implemented, this project enables you to use a Raspberry Pi to record and log the humidity, barometric pressure, and temperature. The database can be installed on one Raspberry Pi and then as many sensor nodes as desired can be added.
 
 ## Set Up the Raspberry Pi
@@ -25,8 +24,7 @@ sudo apt-get install python-pip python-dev python-setuptools python-smbus libpq-
 ```
 
 ### Set the Timezone
-1. Run the command:
-`sudo dpkg-reconfigure tzdata`
+1. Run the command: `sudo dpkg-reconfigure tzdata`
 2. Select "US" or whatever country you wish.
 3. Select "Pacific Ocean" for PST or something else for whichever timezone you need.
 
@@ -44,9 +42,7 @@ network={
 ### Disable WiFi Module Power Management
 1. Make the file /etc/modprobe.d/8192cu.conf
 2. Add this line to the file:
-```
-options 8192cu rtw_power_mgnt=0
-```
+`options 8192cu rtw_power_mgnt=0`
 3. Reboot the Raspberry Pi.
 
 # Set Up PostgreSQL
@@ -62,17 +58,18 @@ options 8192cu rtw_power_mgnt=0
 
 ### Allow Remote Database Access from Any Host
 1. Edit the file /etc/postgresql/9.4/main/pg_hba.conf and add the line:
-```
-host    all     all     0.0.0.0/0       md5
-```
+   ```
+   host    all     all     0.0.0.0/0       md5
+   ```
+   
 2. Edit the file /etc/postgresql/9.4/main/postgresql.conf and uncomment or add this line:
-```
-listen_addresses = '*'
-```
+   ```
+   listen_addresses = '*'
+   ```
 
 ### Create the Database and Schema
 1. Create a database:
-`CREATE DATABASE sensor_data;`
+```CREATE DATABASE sensor_data;```
 2. Create the tables: 
 ```sql
 CREATE TABLE lk_unit
@@ -102,31 +99,36 @@ CREATE TABLE sensor_readings
 
 ### Insert Initial Data
 1. The first record necessary to begin logging is at least one sensor node. Add one with this insert statement:
-```
-INSERT INTO sensor_nodes VALUES (DEFAULT, 'Living Room');
-```
+   
+   ```
+   INSERT INTO sensor_nodes VALUES (DEFAULT, 'Living Room');
+   ```
+   
 2. The next records go into the lookup table for sensor reading units. Add the necessary records with these statements:
-```
-INSERT INTO lk_unit VALUES (1, 'f', 'degrees Fahrenheit');
-INSERT INTO lk_unit VALUES (2, 'hPa', 'hectopascals');
-INSERT INTO lk_unit VALUES (3, '% RH', 'percent relative humidity');
-```
+   
+   ```
+   INSERT INTO lk_unit VALUES (1, 'f', 'degrees Fahrenheit');
+   INSERT INTO lk_unit VALUES (2, 'hPa', 'hectopascals');
+   INSERT INTO lk_unit VALUES (3, '% RH', 'percent relative humidity');
+   ```
 
 ## Set Up the Sensors
 ---
 
 ### Set Up I2C
 1. Edit /ect/modules and add lines:
-```
-snd-bcm2835
-i2c-bcm2708
-i2c-dev
-```
+   ```
+   snd-bcm2835
+   i2c-bcm2708
+   i2c-dev
+   ```
+   
 2. Edit /boot/config.txt and add lines:
-```
-dtparam=i2c1=on
-dtparam=i2c_arm=on
-```
+   ```
+   dtparam=i2c1=on
+   dtparam=i2c_arm=on
+   ```
+   
 3. Reboot the Raspberry Pi.
 4. Connect the BMP085 sensor to the GPIO ports and run the command:
 `sudo i2cdetect -y 1`
