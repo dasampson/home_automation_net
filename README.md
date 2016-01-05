@@ -74,31 +74,31 @@ network={
    ```
    
 2. Create the tables: 
-```sql
-CREATE TABLE lk_unit
-(
-	unit_id smallint PRIMARY KEY,
-	unit_shortname varchar(6) NOT NULL,
-	unit_longname varchar(25)
-);
+   ```sql
+   CREATE TABLE lk_unit
+   (
+	   unit_id smallint PRIMARY KEY,
+	   unit_shortname varchar(6) NOT NULL,
+	   unit_longname varchar(25)
+   );
 
-CREATE TABLE sensor_nodes
-(
-	sensor_node_id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
-	name varchar(25) UNIQUE
-);
+   CREATE TABLE sensor_nodes
+   (
+	   sensor_node_id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+	   name varchar(25) UNIQUE
+   );
 
-CREATE TABLE sensor_readings
-(
-	reading_uuid uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
-	reading_value numeric(10, 2) NOT NULL,
-	reading_unit_id smallint NOT NULL,
-	reading_timestamp timestamp WITH TIME ZONE NOT NULL DEFAULT current_timestamp,
-	sensor_node_id uuid NOT NULL,
-	FOREIGN KEY (reading_unit_id) REFERENCES lk_unit (unit_id),
-	FOREIGN KEY (sensor_node_id) REFERENCES sensor_nodes (sensor_node_id)
-);
-```
+   CREATE TABLE sensor_readings
+   (
+	   reading_uuid uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+	   reading_value numeric(10, 2) NOT NULL,
+	   reading_unit_id smallint NOT NULL,
+	   reading_timestamp timestamp WITH TIME ZONE NOT NULL DEFAULT current_timestamp,
+	   sensor_node_id uuid NOT NULL,
+	   FOREIGN KEY (reading_unit_id) REFERENCES lk_unit (unit_id),
+	   FOREIGN KEY (sensor_node_id) REFERENCES sensor_nodes (sensor_node_id)
+   );
+   ```
 
 ### Insert Initial Data
 1. The first record necessary to begin logging is at least one sensor node. Add one with this insert statement:
@@ -110,9 +110,10 @@ CREATE TABLE sensor_readings
 2. The next records go into the lookup table for sensor reading units. Add the necessary records with these statements:
    
    ```sql
-   INSERT INTO lk_unit VALUES (1, 'f', 'degrees Fahrenheit');
-   INSERT INTO lk_unit VALUES (2, 'hPa', 'hectopascals');
-   INSERT INTO lk_unit VALUES (3, '% RH', 'percent relative humidity');
+   INSERT INTO lk_unit VALUES 
+   (1, 'f', 'degrees Fahrenheit'),
+   (2, 'hPa', 'hectopascals'),
+   (3, '% RH', 'percent relative humidity');
    ```
 
 ## Set Up the Sensors
