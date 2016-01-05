@@ -68,8 +68,11 @@ network={
    ```
 
 ### Create the Database and Schema
-1. Create a database:
-```CREATE DATABASE sensor_data;```
+1. Create the database:
+   ```sql
+   CREATE DATABASE sensor_data;
+   ```
+   
 2. Create the tables: 
 ```sql
 CREATE TABLE lk_unit
@@ -100,13 +103,13 @@ CREATE TABLE sensor_readings
 ### Insert Initial Data
 1. The first record necessary to begin logging is at least one sensor node. Add one with this insert statement:
    
-   ```
+   ```sql
    INSERT INTO sensor_nodes VALUES (DEFAULT, 'Living Room');
    ```
    
 2. The next records go into the lookup table for sensor reading units. Add the necessary records with these statements:
    
-   ```
+   ```sql
    INSERT INTO lk_unit VALUES (1, 'f', 'degrees Fahrenheit');
    INSERT INTO lk_unit VALUES (2, 'hPa', 'hectopascals');
    INSERT INTO lk_unit VALUES (3, '% RH', 'percent relative humidity');
