@@ -10,7 +10,7 @@ timestamp = 'now()'
 
 
 # DHT22 - Get Sensor Readings
-sensor = Adafruit_DHT.AM2302
+sensor = Adafruit_DHT.DHT22
 pin = 23
 dht22_humidity, dht22_temp_c = Adafruit_DHT.read_retry(sensor, pin)
 dht22_temp_f = (dht22_temp_c * 9/5) + 32
