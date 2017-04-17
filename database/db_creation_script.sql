@@ -43,11 +43,11 @@ CREATE TABLE nodes
 
 CREATE TABLE events
 (
-	event_id SERIAL PRIMARY KEY,
-	event_shortname varchar(15) NOT NULL,
+    event_id SERIAL PRIMARY KEY,
+    event_shortname varchar(15) NOT NULL,
     event_description varchar(50) NOT NULL,
-	level smallint NOT NULL,
-	FOREIGN KEY (level) REFERENCES lk_event_level (event_level_id)
+    level smallint NOT NULL,
+    FOREIGN KEY (level) REFERENCES lk_event_level (event_level_id)
 );
 
 CREATE TABLE sensor_records
