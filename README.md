@@ -19,7 +19,7 @@ Driver code for the BMP085 and DHT22 sensors originated from Adafruit and has no
 
 ### Install Required Packages
    ```
-   sudo apt-get install python-pip python-dev python-setuptools python-smbus libpq-dev postgresql postgresql-contrib apache2 libapache2-mod-wsgi
+   sudo apt-get install python-pip python-dev python-setuptools python-smbus libpq-dev postgresql postgresql-contrib
    ```
 
 ### Set the Timezone
@@ -27,9 +27,7 @@ Driver code for the BMP085 and DHT22 sensors originated from Adafruit and has no
 2. Select "US" or whatever country you wish.
 3. Select "Pacific Ocean" for PST or something else for whichever timezone you need.
 
-### Set Up WiFi (Optional)
-
-### Add WiFi Credentials to the Supplicant File
+### Add WiFi Credentials to the Supplicant File (Optional)
 1. Edit /etc/wpa_supplicant/wpa_supplicant.conf and add lines:
    ```
    network={
@@ -37,12 +35,6 @@ Driver code for the BMP085 and DHT22 sensors originated from Adafruit and has no
 	   psk="network password here"
    }
    ```
-
-### Disable WiFi Module Power Management
-1. Make the file /etc/modprobe.d/8192cu.conf
-2. Add this line to the file:
-`options 8192cu rtw_power_mgnt=0`
-3. Reboot the Raspberry Pi.
 
 ## Set Up PostgreSQL
 ---

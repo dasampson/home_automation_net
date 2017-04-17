@@ -20,15 +20,15 @@ CREATE TABLE lk_event_level
 
 CREATE TABLE locations
 (
-	location_id SERIAL PRIMARY KEY,
-	location_name varchar(15) NOT NULL
+    location_id SERIAL PRIMARY KEY,
+    location_name varchar(15) NOT NULL
 );
 
 CREATE TABLE node_descriptions
 (
-	node_description_id SERIAL PRIMARY KEY,
-	node_type varchar(25) NOT NULL,
-	node_description varchar(150) NOT NULL
+    node_description_id SERIAL PRIMARY KEY,
+    node_type varchar(25) NOT NULL,
+    node_description varchar(150) NOT NULL
 );
 
 CREATE TABLE nodes
