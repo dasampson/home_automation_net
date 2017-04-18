@@ -25,7 +25,7 @@ combined_temp_c = (dht22_temp_c + bmp085_temp_c) / 2
 combined_temp_f = (combined_temp_c * 9/5) + 32
 
 
-post_data = { "temperature":combined_temp_f, "pressure":bmp085_pressure, "humidity":dht22_humidity }
+post_data = [ {"value":combined_temp_f, "unit_id":1} ,{"value":bmp085_pressure, "unit_id":2}, { "value":dht22_humidity, "unit_id":3} ]
 
 req = requests.post('http://'+platform_host+'/sensor_records/'+node_id, data=json.dumps(post_data))
 

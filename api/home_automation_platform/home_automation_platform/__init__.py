@@ -2,6 +2,7 @@
 
 from flask import Flask, request, Response
 import psycopg2
+import json
 
 app = Flask(__name__)
 
@@ -23,20 +24,22 @@ def run_db_query(query):
 
 @app.route('/sensor_records/<int:node_id>', methods=['POST'])
 def log_sensor_record(node_id):
-    content = request.get_json(force=True)
+    content = request.get_data()
+    records = json.loads(content)
 
-    run_db_query("INSERT INTO sensor_records VALUES (DEFAULT, {0:0.2f}, {1}, '{2}', '{3}');".format(content['temperature'], '1', timestamp, node_id))
-    run_db_query("INSERT INTO sensor_records VALUES (DEFAULT, {0:0.2f}, {1}, '{2}', '{3}');".format(content['pressure'], '2', timestamp, node_id))
-    run_db_query("INSERT INTO sensor_records VALUES (DEFAULT, {0:0.2f}, {1}, '{2}', '{3}');".format(content['humidity'], '3', timestamp, node_id))
-
+    for record in records:
+        run_db_query("INSERT INTO sensor_records VALUES (DEFAULT, {0:0.2f}, {1}, '{2}', '{3}');".format(record.get('value'), record.get('unit_id'), timestamp, node_id))
+    
     resp = Response('{ "status":"success" }', status=200, mimetype='application/json')
     return resp
 
 @app.route('/event_records/<int:node_id>', methods=['POST'])
 def log_event_record(node_id):
-    content = request.get_json(force=True)
+    content = request.get_data()
+    records = json.loads(content)
 
-    run_db_query("INSERT INTO event_records VALUES (DEFAULT, {0}, '{1}', '{2}');".format(content['event_id'], timestamp, node_id))
+    for record in records:
+        run_db_query("INSERT INTO event_records VALUES (DEFAULT, {0}, '{1}', '{2}');".format(record.get('event_id'), timestamp, node_id))
 
     resp = Response('{ "status":"success" }', status=200, mimetype='application/json')
     return resp
