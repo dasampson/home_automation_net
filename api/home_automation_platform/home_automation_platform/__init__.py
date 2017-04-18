@@ -25,7 +25,6 @@ def run_db_query(query):
 def log_sensor_record(node_id):
     content = request.get_json(force=True)
 
-    # Write sensor readings to database
     run_db_query("INSERT INTO sensor_records VALUES (DEFAULT, {0:0.2f}, {1}, '{2}', '{3}');".format(content['temperature'], '1', timestamp, node_id))
     run_db_query("INSERT INTO sensor_records VALUES (DEFAULT, {0:0.2f}, {1}, '{2}', '{3}');".format(content['pressure'], '2', timestamp, node_id))
     run_db_query("INSERT INTO sensor_records VALUES (DEFAULT, {0:0.2f}, {1}, '{2}', '{3}');".format(content['humidity'], '3', timestamp, node_id))
@@ -37,7 +36,6 @@ def log_sensor_record(node_id):
 def log_event_record(node_id):
     content = request.get_json(force=True)
 
-    # Write sensor readings to database
     run_db_query("INSERT INTO event_records VALUES (DEFAULT, {0}, '{1}', '{2}');".format(content['event_id'], timestamp, node_id))
 
     resp = Response('{ "status":"success" }', status=200, mimetype='application/json')
