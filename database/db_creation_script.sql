@@ -44,8 +44,8 @@ CREATE TABLE nodes
 CREATE TABLE events
 (
     event_id SERIAL PRIMARY KEY,
-    event_shortname varchar(15) NOT NULL,
-    event_description varchar(50) NOT NULL,
+    event_shortname varchar(25) NOT NULL,
+    event_description varchar(100) NOT NULL,
     level smallint NOT NULL,
     FOREIGN KEY (level) REFERENCES lk_event_level (event_level_id)
 );
@@ -102,4 +102,6 @@ INSERT INTO nodes VALUES
 
 INSERT INTO events VALUES
 (DEFAULT, 'Garage Opened', 'Garage door has been opened.', 4),
-(DEFAULT, 'Garage Closed', 'Garage door has been closed.', 4);
+(DEFAULT, 'Garage Closed', 'Garage door has been closed.', 4),
+(DEFAULT, 'Garage Open Initiated', 'Garage door open has been initiated by controller.', 4),
+(DEFAULT, 'Garage Close Initiated', 'Garage door close has been initiated by controller.', 4);
