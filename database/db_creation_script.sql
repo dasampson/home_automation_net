@@ -78,8 +78,9 @@ INSERT INTO lk_unit VALUES
 INSERT INTO lk_event_level VALUES
 (1, 'fat', 'Fatal'),
 (2, 'err', 'Error'),
-(3, 'inf', 'Informational'),
-(4, 'dbg', 'Debug');
+(3, 'wrn', 'Warn'),
+(4, 'inf', 'Informational'),
+(5, 'dbg', 'Debug');
 
 INSERT INTO locations VALUES
 (1, 'Office'),
@@ -100,5 +101,5 @@ INSERT INTO nodes VALUES
 (DEFAULT, 'Garage Door Controller', 2, 3);
 
 INSERT INTO events VALUES
-(DEFAULT, 'Garage Opened', 'Garage door has been opened.', 3),
-(DEFAULT, 'Garage Closed', 'Garage door has been closed.', 3);
+(DEFAULT, 'Garage Opened', 'Garage door has been opened.', 4),
+(DEFAULT, 'Garage Closed', 'Garage door has been closed.', 4);
