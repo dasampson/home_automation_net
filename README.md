@@ -160,11 +160,11 @@ While developing with Flask it is possible to launch an application by executing
 5. Run the `simpletest.py` file and ensure that sensor readings are returned.
 
 ### Set Up a Cronjob to Run the Script Gathering Sensor Readings
-1. Use this command to edit the cronjob file:
+1. Edit the cronjob file.
    ```
    sudo crontab -e
    ```
-2. Add this line to execute the Python script each minute to take readings:
+2. Add this line to execute the Python script each hour on the hour.
    ```
-   * * * * * python /home/pi/cron_jobs/sensor_sweep.py
+   0 * * * * python /home/pi/cron_jobs/sensor_sweep.py
    ```
