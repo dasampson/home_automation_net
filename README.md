@@ -19,13 +19,11 @@ Driver code for the BMP085 and DHT22 sensors originated from Adafruit and has no
 
 ### Install Required Packages
    ```
-   sudo apt-get install python-pip python-dev python-setuptools python-smbus libpq-dev postgresql postgresql-contrib
+   sudo apt-get install python-pip python-dev python-setuptools python-smbus libpq-dev postgresql postgresql-contrib git
    ```
 
-### Set the Timezone
-1. Run the command: `sudo dpkg-reconfigure tzdata`
-2. Select "US" or whatever country you wish.
-3. Select "Pacific Ocean" for PST or something else for whichever timezone you need.
+### Run raspi-config Utility
+The raspi-config utility can be run with the comman `sudo raspi-config`. It will allow you to set the timezone, locale, and many other things.
 
 ### Add WiFi Credentials to the Supplicant File (Optional)
 1. Edit /etc/wpa_supplicant/wpa_supplicant.conf and add lines:
@@ -34,6 +32,14 @@ Driver code for the BMP085 and DHT22 sensors originated from Adafruit and has no
 	   ssid="network name here"
 	   psk="network password here"
    }
+   ```
+2. Take WiFi offline.
+   ```
+   sudo ifdown wlan0
+   ```
+3. Put WiFi back online.
+   ```
+   sudo ifup wlan0
    ```
 
 ## Set Up PostgreSQL
@@ -73,13 +79,13 @@ Driver code for the BMP085 and DHT22 sensors originated from Adafruit and has no
 While developing with Flask it is possible to launch an application by executing the file. This app is launched ina development server - to deploy this in "production" takes an actual web server. This app, the home automation platform (REST API), will run in Apache version 2.2. Deploying in other versions of Apache will require changes to the home_automation_platform.conf file.
 
 ### Steps to Setting Up and Deploying in Apache and Flask
-1. Install flask.
+1. Install Apache web server, the WSGI module, and flask.
    ```
-   sudo apt-get install python-flask
+   sudo apt-get install apache2 python-flask libapache2-mod-wsgi
    ```
-2. Install the wsgi module.
+2. Install the psycopg2 library to interact wit hthe database.
    ```
-   sudo apt-get install libapache2-mod-wsgi
+   sudo pip install psycopg2
    ```
 3. Copy the home_automation_platform folder under the api folder in the repository into /var/www/. This includes the WSGI configuration file and the __init__ file with the code running the API. You must edit the __init__.py file to add details about the database in the fileds with empty strings at the top of the file. 
 4. Copy the home_automation_platform.conf file into /etc/apache2/sites-available/. This is the apache configuration file, and you must edit it with the IP or hostname of the server that will be running the api.
@@ -103,7 +109,7 @@ While developing with Flask it is possible to launch an application by executing
 8. At this point the app should be running and handling requests. Try testing it by using curl to send it some information. 
    For Example:
    ```
-   curl -H "Content-Type: application/json" -X POST -d '{ "temperature":55, "pressure":999, "humidity":33 }' http://192.168.1.200/sensor_records/1
+   curl -H "Content-Type: application/json" -X POST -d '[ {"value":72, "unit_id":1}, {"value":990, "unit_id":2}, { "value":60, "unit_id":3} ]' http://192.168.1.200/sensor_records/1
 
    ```
 
