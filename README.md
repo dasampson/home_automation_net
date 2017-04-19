@@ -76,7 +76,7 @@ The raspi-config utility can be run with the comman `sudo raspi-config`. It will
 ---
 
 ### Working with Flask
-While developing with Flask it is possible to launch an application by executing the file. This app is launched ina development server - to deploy this in "production" takes an actual web server. This app, the home automation platform (REST API), will run in Apache version 2.2. Deploying in other versions of Apache will require changes to the home_automation_platform.conf file.
+While developing with Flask it is possible to launch an application by executing the file. This app is launched ina development server - to deploy this in "production" takes an actual web server. This app, the home automation platform (REST API), will run in Apache version 2.4. Deploying in other versions of Apache will require changes to the home_automation_platform.conf file.
 
 ### Steps to Setting Up and Deploying in Apache and Flask
 1. Install Apache web server, the WSGI module, and flask.
