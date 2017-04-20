@@ -19,7 +19,7 @@ Driver code for the BMP085 and DHT22 sensors originated from Adafruit and has no
 
 ### Install Required Packages
    ```
-   sudo apt-get install python-pip python-dev python-setuptools python-smbus libpq-dev postgresql postgresql-contrib git
+   sudo apt-get install python-pip python-dev python-setuptools libpq-dev postgresql postgresql-contrib git
    ```
 
 ### Run raspi-config Utility
@@ -117,16 +117,13 @@ While developing with Flask it is possible to launch an application by executing
 ---
 
 ### Set Up I2C
-1. Edit /ect/modules and add lines:
+1. Edit /ect/modules and add this line.
    ```
-   snd-bcm2835
-   i2c-bcm2708
    i2c-dev
    ```
    
 2. Edit /boot/config.txt and add lines:
    ```
-   dtparam=i2c1=on
    dtparam=i2c_arm=on
    ```
    
@@ -158,6 +155,11 @@ While developing with Flask it is possible to launch an application by executing
 `cd examples/`
 4. Edit the `simpletest.py` file and ensure the sensor and pin are set correctly.
 5. Run the `simpletest.py` file and ensure that sensor readings are returned.
+
+### Install Required Libraries
+   ```
+   sudo apt-get install python-requests python-smbus
+   ```
 
 ### Set Up a Cronjob to Run the Script Gathering Sensor Readings
 1. Edit the cronjob file.
