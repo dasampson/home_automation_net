@@ -166,7 +166,7 @@ While developing with Flask it is possible to launch an application by executing
    ```
    sudo crontab -e
    ```
-2. Add this line to execute the Python script each hour on the hour.
+2. Add this line to execute the Python script each hour on the hour. Note that the folder path should lead to wherever the sensor_sweep python file is.
    ```
-   0 * * * * python /home/pi/cron_jobs/sensor_sweep.py
+   0 * * * * python /home/pi/sensor_node/sensor_sweep.py
    ```
