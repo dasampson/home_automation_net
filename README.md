@@ -19,7 +19,7 @@ Driver code for the BMP085 and DHT22 sensors originated from Adafruit and has no
 
 ### Install Required Packages
    ```
-   sudo apt-get install python-pip python-dev python-setuptools libpq-dev postgresql postgresql-contrib git
+   sudo apt-get install python-pip python-dev python-setuptools git
    ```
 
 ### Run raspi-config Utility
@@ -46,11 +46,15 @@ The raspi-config utility can be run with the comman `sudo raspi-config`. It will
 ---
 
 ### Prepare PostgreSQL
-1. Log into Postgres.
+1. Install Postgres.
+   ```
+   postgresql postgresql-contrib libpq-dev
+   ```
+2. Log into Postgres.
    ```
    sudo -u postgres psql
    ```
-2. Set a password for the postgres user.
+3. Set a password for the postgres user.
    ```
    ALTER USER postgres WITH PASSWORD 'your password here';
    ```
@@ -72,7 +76,7 @@ The raspi-config utility can be run with the comman `sudo raspi-config`. It will
    psql -h [DB SERVER HOSTNAME/IP] -U postgres -p 5432 -f db_creation_script.sql
    ```
 
-## Set Up the RESTful API
+## Set Up the Hub API
 ---
 
 ### Working with Flask
@@ -87,9 +91,9 @@ While developing with Flask it is possible to launch an application by executing
    ```
    sudo pip install psycopg2
    ```
-3. Copy the home_automation_platform folder under the api folder in the repository into /var/www/. This includes the WSGI configuration file and the __init__ file with the code running the API. You must edit the __init__.py file to add details about the database in the fileds with empty strings at the top of the file. 
-4. Copy the home_automation_platform.conf file into /etc/apache2/sites-available/. This is the apache configuration file, and you must edit it with the IP or hostname of the server that will be running the api.
-5. Open /etc/apache2/sites-available/default and ensure that the virtual host is set to something besides port 80 since that is the port the app will run on.
+3. Copy the home_automation_platform folder under the api folder in the repository into /var/www/. Edit the \_\_init\_\_.py file to add details about the database in the empty fields at the top of the file. 
+4. Copy the home_automation_platform.conf file into /etc/apache2/sites-available/. Edit it with the IP or hostname of the server that will be running the api.
+5. Open /etc/apache2/sites-available/000-default.conf and ensure that the virtual host is set to something besides port 80 since that is the port the app will run on.
    Original:
    ```
    <VirtualHost *:80>
