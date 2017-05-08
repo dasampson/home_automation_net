@@ -87,7 +87,7 @@ While developing with Flask it is possible to launch an application by executing
    ```
    sudo apt-get install apache2 python-flask libapache2-mod-wsgi
    ```
-2. Install the psycopg2 library to interact wit hthe database.
+2. Install the psycopg2 library to interact with the database.
    ```
    sudo pip install psycopg2
    ```
@@ -119,6 +119,11 @@ While developing with Flask it is possible to launch an application by executing
 
 ## Set Up the Sensors
 ---
+
+### Install Required Libraries
+   ```
+   sudo apt-get install python-requests python-smbus
+   ```
 
 ### Set Up I2C
 1. Edit /ect/modules and add this line.
@@ -160,11 +165,6 @@ While developing with Flask it is possible to launch an application by executing
 4. Edit the `simpletest.py` file and ensure the sensor and pin are set correctly.
 5. Run the `simpletest.py` file and ensure that sensor readings are returned.
 
-### Install Required Libraries
-   ```
-   sudo apt-get install python-requests python-smbus
-   ```
-
 ### Set Up a Cronjob to Run the Script Gathering Sensor Readings
 1. Edit the cronjob file.
    ```
@@ -173,4 +173,36 @@ While developing with Flask it is possible to launch an application by executing
 2. Add this line to execute the Python script each hour on the hour. Note that the folder path should lead to wherever the sensor_sweep python file is.
    ```
    0 * * * * python /home/pi/sensor_node/sensor_sweep.py
+   ```
+
+## Set Up the Node API
+
+### Install Required Dependencies
+1. Install Apache web server, the WSGI module, and flask.
+   ```
+   sudo apt-get install apache2 python-flask libapache2-mod-wsgi
+   ```
+2. Move the whichever node folder (e.g. garage_node, environment_node) to /var/www/.
+3. Move the .conf file for the node into /etc/apache2/sites-available/.
+4. Add the www-data user to the gpio and i2c groups. Without this step the user running apache will not be able to access the GPIO pins.
+   ```
+   sudo adduser www-data gpio
+   sudo adduser www-data i2c
+   ```
+5. Open /etc/apache2/sites-available/000-default.conf and ensure that the virtual host is set to something besides port 80 since that is the port the app will run on.
+   Original:
+   ```
+   <VirtualHost *:80>
+   ```
+   Change to:
+   ```
+   <VirtualHost *:8080>
+   ```
+6. Enable the site in apache. For example:
+   ```
+   sudo a2ensite environment_node.conf
+   ```
+7. Reload the `apache2` service.
+   ```
+   sudo service apache2 reload
    ```
