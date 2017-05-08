@@ -14,7 +14,6 @@ This project enables you to use a Raspberry Pi to record and log the relative hu
 - Breadboard
 - Breadboard Jumper Wires (Male-to-Male)
 - Breadboard Jumper Wires (Female-to-Male)
-- 4.7k Ohm Resistor for DHT22 Sensor
 
 ### Install Required Packages
    ```
@@ -152,16 +151,6 @@ While developing with Flask it is possible to launch an application by executing
    50: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
    60: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
    70: -- -- -- -- -- -- -- 77    
-   ```
-
-### Set Up a Cronjob to Run the Script Gathering Sensor Readings
-1. Edit the cronjob file.
-   ```
-   sudo crontab -e
-   ```
-2. Add this line to execute the Python script each hour on the hour. Note that the folder path should lead to wherever the sensor_sweep python file is.
-   ```
-   0 * * * * python /home/pi/sensor_node/sensor_sweep.py
    ```
 
 ## Set Up the Node API
