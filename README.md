@@ -1,6 +1,6 @@
 # Home Automation Project
 ---
-Driver code for the BMP085 and DHT22 sensors originated from Adafruit and has not been modified. For more information on setting up these sensors, please visit the Adafruit website. When properly implemented this project enables you to use a Raspberry Pi to record and log the relative humidity, barometric pressure, temperature, and event records. It is possible to implement the sensors, API, and database on one Raspberry Pi or spread it out among several (i.e. one pi running the database, another running the API, and as many others as you want running sensors).
+This project enables you to use a Raspberry Pi to record and log the relative humidity, barometric pressure, temperature, and event records. It is possible to implement the sensors, API, and database on one Raspberry Pi or spread it out among several (i.e. one pi running the database, another running the API, and as many others as you want running sensors).
 
 ## Set Up the Raspberry Pi
 ---
@@ -10,7 +10,6 @@ Driver code for the BMP085 and DHT22 sensors originated from Adafruit and has no
 - 2.5 amp power supply
 - MicroUSB Cable
 - MicroSD Card
-- DHT22 Humidity and Temperature Sensor
 - BMP085 Barometric Pressure and Temperature Sensor
 - Breadboard
 - Breadboard Jumper Wires (Male-to-Male)
@@ -154,16 +153,6 @@ While developing with Flask it is possible to launch an application by executing
    60: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
    70: -- -- -- -- -- -- -- 77    
    ```
-
-### Set Up the DHT22 Driver
-1. Navigate to the folder with the DHT22 driver code:
-`cd Adafruit_Python_DHT/`
-2. Run the script to install the driver:
-`sudo python setup.py install`
-3. Navigate to the examples folder inside the Adafruit_Python_DHT folder:
-`cd examples/`
-4. Edit the `simpletest.py` file and ensure the sensor and pin are set correctly.
-5. Run the `simpletest.py` file and ensure that sensor readings are returned.
 
 ### Set Up a Cronjob to Run the Script Gathering Sensor Readings
 1. Edit the cronjob file.
