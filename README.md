@@ -6,14 +6,9 @@ This project enables you to use a Raspberry Pi to record and log the relative hu
 ---
 
 ### Required Hardware
-- Raspberry Pi 3 Model B
-- 2.5 amp power supply
-- MicroUSB Cable
-- MicroSD Card
+- Raspberry Pi 3 Model B (2.5 amp power supply, MicroUSB Cable, and MicroSD Card)
 - BMP085 Barometric Pressure and Temperature Sensor
-- Breadboard
-- Breadboard Jumper Wires (Male-to-Male)
-- Breadboard Jumper Wires (Female-to-Male)
+- SparkFun Beefcake Relay Control Kit Version 2.0
 
 ### Install Required Packages
    ```
