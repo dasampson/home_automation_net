@@ -46,5 +46,14 @@ def garage_close():
 
     return resp
 
+@app.route('/garage/status', methods=['GET'])
+def garage_status():
+    if door_status_open():
+    	resp = Response('{ "status":"open" }', status=200, mimetype='application/json')
+    else:
+    	resp = Response('{ "status":"closed" }', status=200, mimetype='application/json')
+
+    return resp
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0',debug=True)
