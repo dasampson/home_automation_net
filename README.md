@@ -9,6 +9,7 @@ This project enables you to use a Raspberry Pi to record and log the relative hu
 - Raspberry Pi 3 Model B (2.5 amp power supply, MicroUSB Cable, and MicroSD Card)
 - BMP085 Barometric Pressure and Temperature Sensor
 - SparkFun Beefcake Relay Control Kit Version 2.0
+- Reed Switch
 
 ### Install Required Packages
    ```

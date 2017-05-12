@@ -7,9 +7,11 @@ import time
 
 app = Flask(__name__)
 
+GARAGEPIN = 23
+DOORPIN = 18
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
-GARAGEPIN = 23
+GPIO.setup(DOORPIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(GARAGEPIN, GPIO.OUT)
 GPIO.output(GARAGEPIN, GPIO.LOW)
 
@@ -18,18 +20,30 @@ def garage_activate():
     time.sleep(0.5)
     GPIO.output(GARAGEPIN, GPIO.LOW)
 
-@app.route('/door/open', methods=['PUT'])
-def garage_close():
-    garage_activate()
+def door_status_open():
+	if not GPIO.input(DOORPIN):
+		return True
+	else:
+		return False
 
-    resp = Response('{ "status":"success" }', status=200, mimetype='application/json')
+@app.route('/garage/open', methods=['PUT'])
+def garage_open():
+    if door_status_open():
+    	garage_activate()
+    	resp = Response('{ "status":"success" }', status=200, mimetype='application/json')
+    else:
+    	resp = Response(status=304, mimetype='application/json')
+    
     return resp
 
-@app.route('/door/close', methods=['PUT'])
+@app.route('/garage/close', methods=['PUT'])
 def garage_close():
-    garage_activate()
+    if not door_status_open():
+    	garage_activate()
+    	resp = Response('{ "status":"success" }', status=200, mimetype='application/json')
+    else:
+    	resp = Response(status=304, mimetype='application/json')
 
-    resp = Response('{ "status":"success" }', status=200, mimetype='application/json')
     return resp
 
 if __name__ == '__main__':
