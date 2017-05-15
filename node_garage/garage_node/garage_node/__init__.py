@@ -21,14 +21,14 @@ def garage_activate():
     GPIO.output(GARAGEPIN, GPIO.LOW)
 
 def door_status_open():
-	if not GPIO.input(DOORPIN):
+	if GPIO.input(DOORPIN):
 		return True
 	else:
 		return False
 
 @app.route('/garage/open', methods=['PUT'])
 def garage_open():
-    if door_status_open():
+    if not door_status_open():
     	garage_activate()
     	resp = Response('{ "status":"success" }', status=200, mimetype='application/json')
     else:
@@ -38,7 +38,7 @@ def garage_open():
 
 @app.route('/garage/close', methods=['PUT'])
 def garage_close():
-    if not door_status_open():
+    if door_status_open():
     	garage_activate()
     	resp = Response('{ "status":"success" }', status=200, mimetype='application/json')
     else:
