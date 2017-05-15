@@ -7,21 +7,21 @@ import time
 
 app = Flask(__name__)
 
-GARAGEPIN = 23
-DOORPIN = 18
+PIN_RELAY = 23
+PIN_REEDSWITCH = 18
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
-GPIO.setup(DOORPIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-GPIO.setup(GARAGEPIN, GPIO.OUT)
-GPIO.output(GARAGEPIN, GPIO.LOW)
+GPIO.setup(PIN_REEDSWITCH, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.setup(PIN_RELAY, GPIO.OUT)
+GPIO.output(PIN_RELAY, GPIO.LOW)
 
 def garage_activate():
-    GPIO.output(GARAGEPIN, GPIO.HIGH)
+    GPIO.output(PIN_RELAY, GPIO.HIGH)
     time.sleep(0.5)
-    GPIO.output(GARAGEPIN, GPIO.LOW)
+    GPIO.output(PIN_RELAY, GPIO.LOW)
 
 def door_status_open():
-	if GPIO.input(DOORPIN):
+	if GPIO.input(PIN_REEDSWITCH):
 		return True
 	else:
 		return False
