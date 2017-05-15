@@ -5,9 +5,9 @@ This project enables you to use a Raspberry Pi to record and log the relative hu
 ## Set Up the Raspberry Pi
 ---
 
-### Required Hardware
+### Hardware
 - Raspberry Pi 3 Model B (2.5 amp power supply, MicroUSB Cable, and MicroSD Card)
-- BMP085 Barometric Pressure and Temperature Sensor
+- BME280 Barometric Pressure, Realtive Humidity, and Temperature Sensor
 - SparkFun Beefcake Relay Control Kit Version 2.0
 - Reed Switch
 
@@ -111,7 +111,7 @@ While developing with Flask it is possible to launch an application by executing
 
    ```
 
-## Set Up the Sensors
+## Set Up the Sensor
 ---
 
 ### Install Required Libraries
@@ -131,7 +131,7 @@ While developing with Flask it is possible to launch an application by executing
    ```
    
 3. Reboot the Raspberry Pi.
-4. Connect the BMP085 sensor to the GPIO ports and run the command
+4. Connect the BME280 sensor to the GPIO ports and run the command
    ```
    sudo i2cdetect -y 1
    ```
@@ -148,6 +148,7 @@ While developing with Flask it is possible to launch an application by executing
    60: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
    70: -- -- -- -- -- -- -- 77    
    ```
+7. If this is an environment module make sure to update the BME280.py file with the i2c device address.
 
 ## Set Up the Node API
 
