@@ -42,7 +42,7 @@ The raspi-config utility can be run with the comman `sudo raspi-config`. It will
 ### Prepare PostgreSQL
 1. Install Postgres.
    ```
-   postgresql postgresql-contrib libpq-dev
+   sudo apt-get install postgresql postgresql-contrib libpq-dev
    ```
 2. Log into Postgres.
    ```
