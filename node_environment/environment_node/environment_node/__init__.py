@@ -7,7 +7,7 @@ import BME280
 app = Flask(__name__)
 
 @app.route('/sensors/all', methods=['GET'])
-def return_sensor_readings():
+def sensors_all():
     temperature, pressure, humidity = BME280.readAllSensors()
 
     post_data = [ {"value":temperature, "unit_id":1}, {"value":pressure, "unit_id":2}, { "value":humidity, "unit_id":3 } ]
@@ -17,7 +17,7 @@ def return_sensor_readings():
     return resp
 
 @app.route('/sensors/temperature', methods=['GET'])
-def return_sensor_readings():
+def sensor_temperature():
     temperature, pressure, humidity = BME280.readAllSensors()
 
     post_data = [ {"value":temperature, "unit_id":1} ]
@@ -27,7 +27,7 @@ def return_sensor_readings():
     return resp
 
 @app.route('/sensors/pressure', methods=['GET'])
-def return_sensor_readings():
+def sensor_pressure():
     temperature, pressure, humidity = BME280.readAllSensors()
 
     post_data = [ {"value":pressure, "unit_id":2} ]
@@ -37,7 +37,7 @@ def return_sensor_readings():
     return resp
 
 @app.route('/sensors/humidity', methods=['GET'])
-def return_sensor_readings():
+def sensor_humidity():
     temperature, pressure, humidity = BME280.readAllSensors()
 
     post_data = [ { "value":humidity, "unit_id":3 } ]
