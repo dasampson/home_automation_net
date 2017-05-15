@@ -7,7 +7,7 @@ This project enables you to use a Raspberry Pi to record and log the relative hu
 
 ### Hardware
 - Raspberry Pi 3 Model B (2.5 amp power supply, MicroUSB Cable, and MicroSD Card)
-- BME280 Barometric Pressure, Realtive Humidity, and Temperature Sensor
+- BME280 Barometric Pressure, Relative Humidity, and Temperature Sensor
 - SparkFun Beefcake Relay Control Kit Version 2.0
 - Reed Switch
 
