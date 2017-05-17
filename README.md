@@ -111,7 +111,7 @@ While developing with Flask it is possible to launch an application by executing
 
    ```
 
-## Set Up the Sensor
+## Set Up the Sensor for an Environment Node
 ---
 
 ### Install Required Libraries
@@ -136,7 +136,7 @@ While developing with Flask it is possible to launch an application by executing
    sudo i2cdetect -y 1
    ```
 5. If this command doesn't work try a 0 instead of a 1. 
-6. The command prints out connected devices. This example shows one BMP085 connected:
+6. The command prints out connected devices. This example shows one BME280 connected:
    ```
         0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f
    00:          -- -- -- -- -- -- -- -- -- -- -- -- -- 
@@ -148,7 +148,7 @@ While developing with Flask it is possible to launch an application by executing
    60: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
    70: -- -- -- -- -- -- -- 77    
    ```
-7. If this is an environment module make sure to update the BME280.py file with the i2c device address.
+7. Make sure to update the BME280.py file with the i2c device address.
 
 ## Set Up the Node API
 

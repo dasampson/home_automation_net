@@ -6,7 +6,6 @@ from ctypes import c_short
 from ctypes import c_byte
 from ctypes import c_ubyte
 
-
 I2C_ADDRESS = 0x77
 bus = smbus.SMBus(1)
 
@@ -19,7 +18,7 @@ def getUShort(data, index):
 def getChar(data,index):
     result = data[index]
     if result > 127:
-      result -= 256
+        result -= 256
     return result
 
 def getUChar(data,index):
@@ -89,15 +88,12 @@ def readAllSensors(addr=I2C_ADDRESS):
     var1 = (dig_P3 * var1 * var1 / 524288.0 + dig_P2 * var1) / 524288.0
     var1 = (1.0 + var1 / 32768.0) * dig_P1
 
-    if var1 == 0:
-        pressure=0
-    else:
-        pressure = 1048576.0 - raw_pressure
-        pressure = ((pressure - var2 / 4096.0) * 6250.0) / var1
-        var1 = dig_P9 * pressure * pressure / 2147483648.0
-        var2 = pressure * dig_P8 / 32768.0
-        pressure = pressure + (var1 + var2 + dig_P7) / 16.0
-        pressure = pressure/100.0
+    pressure = 1048576.0 - raw_pressure
+    pressure = ((pressure - var2 / 4096.0) * 6250.0) / var1
+    var1 = dig_P9 * pressure * pressure / 2147483648.0
+    var2 = pressure * dig_P8 / 32768.0
+    pressure = pressure + (var1 + var2 + dig_P7) / 16.0
+    pressure = pressure/100.0
   
     humidity = t_fine - 76800.0
     humidity = (raw_humidity - (dig_H4 * 64.0 + dig_H5 / 16384.0 * humidity)) * (dig_H2 / 65536.0 * (1.0 + dig_H6 / 67108864.0 * humidity * (1.0 + dig_H3 / 67108864.0 * humidity)))
