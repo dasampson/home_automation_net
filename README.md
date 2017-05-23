@@ -20,7 +20,7 @@ This project enables you to use a Raspberry Pi to record and log the relative hu
 The raspi-config utility can be run with the comman `sudo raspi-config`. It will allow you to set the timezone, locale, and many other things.
 
 ### Add WiFi Credentials to the Supplicant File (Optional)
-1. Edit /etc/wpa_supplicant/wpa_supplicant.conf and add lines:
+1. Edit /etc/wpa\_supplicant/wpa\_supplicant.conf and add lines:
    ```
    network={
 	   ssid="network name here"
@@ -67,7 +67,7 @@ The raspi-config utility can be run with the comman `sudo raspi-config`. It will
 ### Create the Database and Schema
 1. Run the database setup script using the psql utility to generate the database, generate its tables, and fill them with some initial data:
    ```
-   psql -h [DB SERVER HOSTNAME/IP] -U postgres -p 5432 -f db_creation_script.sql
+   psql -h [DB SERVER HOSTNAME/IP] -U postgres -p 5432 -f db\_creation\_script.sql
    ```
 
 ## Set Up the Hub API
@@ -85,8 +85,8 @@ While developing with Flask it is possible to launch an application by executing
    ```
    sudo pip install psycopg2
    ```
-3. Copy the home_automation_platform folder under the api folder in the repository into /var/www/. Edit the \_\_init\_\_.py file to add details about the database in the empty fields at the top of the file. 
-4. Copy the home_automation_platform.conf file into /etc/apache2/sites-available/. Edit it with the IP or hostname of the server that will be running the api.
+3. Copy the home\_automation_platform folder under the api folder in the repository into /var/www/. Edit the \_\_init\_\_.py file to add details about the database in the empty fields at the top of the file. 
+4. Copy the home\_automation_platform.conf file into /etc/apache2/sites-available/. Edit it with the IP or hostname of the server that will be running the api.
 5. Open /etc/apache2/sites-available/000-default.conf and ensure that the virtual host is set to something besides port 80 since that is the port the app will run on.
    Original:
    ```
@@ -98,7 +98,7 @@ While developing with Flask it is possible to launch an application by executing
    ```
 6. Enable the site in apache.
    ```
-   sudo a2ensite home_automation_platform.conf
+   sudo a2ensite home\_automation_platform.conf
    ```
 7. Reload the `apache2` service.
    ```
@@ -107,7 +107,7 @@ While developing with Flask it is possible to launch an application by executing
 8. At this point the app should be running and handling requests. Try testing it by using curl to send it some information. 
    For Example:
    ```
-   curl -H "Content-Type: application/json" -X POST -d '[ {"value":72, "unit_id":1}, {"value":990, "unit_id":2}, { "value":60, "unit_id":3} ]' http://192.168.1.200/sensor_records/1
+   curl -H "Content-Type: application/json" -X POST -d '[ {"value":72, "unit\_id":1}, {"value":990, "unit\_id":2}, { "value":60, "unit\_id":3} ]' http://192.168.1.200/sensor_records/1
 
    ```
 
@@ -151,13 +151,14 @@ While developing with Flask it is possible to launch an application by executing
 7. Make sure to update the BME280.py file with the i2c device address.
 
 ## Set Up the Node API
+---
 
 ### Install Required Dependencies
 1. Install Apache web server, the WSGI module, and flask.
    ```
    sudo apt-get install apache2 python-flask libapache2-mod-wsgi
    ```
-2. Move the whichever node folder (e.g. garage_node, environment_node) to /var/www/.
+2. Move the whichever node folder (e.g. garage\_node, environment\_node) to /var/www/.
 3. Move the .conf file for the node into /etc/apache2/sites-available/.
 4. Add the www-data user to the gpio and i2c groups. Without this step the user running apache will not be able to access the GPIO pins.
    ```
@@ -180,4 +181,72 @@ While developing with Flask it is possible to launch an application by executing
 7. Reload the `apache2` service.
    ```
    sudo service apache2 reload
+   ```
+
+## Security
+---
+
+### Set Up SSH Keys
+Setting up SSH keys and turning off password authentication greatly inceases security surrounding SSH. Without the private key a user will not be able to SSH into the raspberry pi. 
+1. Generate the key pair. Add whatever comment makes sense between the quotation marks. Add a password at the prompt if you want added security, and otherwise just hit enter to use it without a password. 
+   ```
+   ssh-keygen -t rsa -C "Home Automation Net"
+   ```
+2. There should be two files in the ~/.ssh folder: id\_rsa and id\_rsa.pub. Save these files somewhere safe.
+3. The id_rsa file is the private key; only put this key in the .ssh folder on computers you want to use to SSH from. Do not allow anyone else to have the id\_rsa file. Once copied to a new machine the permissions need to be set as follows.
+   ```
+   sudo chmod 0644 ~/.ssh/id\_rsa
+   ```
+4. Copy the contents of the id\_rsa.pub file, and add them to the ~/.ssh/authorized\_keys file on any Raspberry Pi you want to be able to SSH into using keys. 
+5. Make sure this line is uncommented in the /etc/ssh/sshd\_config file.
+   ```
+   AuthorizedKeysFile      %h/.ssh/authorized\_keys
+   ```
+6. In the /etc/ssh/sshd_config file uncomment this line and change yes to no to disable password authentication or simply add the line below to the file. 
+   ```
+   PasswordAuthentication no
+   ```
+7. Reload the ssh service. NOTE: Make sure the key pair is saved, the id_rsa file is in place where you will SSH from, and the public key has been copied to the ~/.ssh/authorized\_keys file on the destination. 
+   ```
+   sudo service apache2 reload
+   ```
+8. Place the public key on all the nodes. Place the private key on whichever computers you will use to SSH as well as the hub node.
+
+### Set Up iptables
+Iptables is the firewall packaged with Raspbian and it has wide open permissions by default. It has three chains: one for incoming, outgoing, and another for forwarded. We will use this to restrict access to the nodes, since everything will be centralized at the hub node. Make sure the same configuration is made on every node aside from the hub.
+1. Ensure that there are no rules in place. If there are existing rules and policies ensure that they do not block the changes here. If nothing has been set up everything should be allowed by default.
+Command:
+   ```
+   sudo iptables -L -v
+   ```
+Output:
+   ```
+   Chain INPUT (policy ACCEPT 0 packets, 0 bytes)
+   pkts bytes target     prot opt in     out     source               destination 
+
+   Chain FORWARD (policy ACCEPT 0 packets, 0 bytes)
+   pkts bytes target     prot opt in     out     source               destination 
+
+   Chain OUTPUT (policy ACCEPT 0 packets, 0 bytes)
+   pkts bytes target     prot opt in     out     source               destination 
+   ```
+2. Set the policy to drop anything being forwarded. These are end nodes and don't need the ability to forward. 
+   ```
+   sudo iptables -P FORWARD DROP
+   ```
+3. Add permitted access for incoming communications. Use this command for each device that will be used to connect. Replace the IP address below with the IP address or hostname of the device you will connect from. NOTE: Make sure to include the hub node. 
+   ```
+   sudo iptables -A INPUT -s 192.168.1.10 -j ACCEPT
+   ```
+4. Add permitted access for the loopback address.
+   ```
+   sudo iptables -A INPUT -s 127.0.0.1 -j ACCEPT
+   ```
+5. Add permitted access for the loopback interface. 
+   ```
+   sudo iptables -A INPUT -i lo -j ACCEPT
+   ```
+6. Change the policy for incoming to DROP so that iptables only allows access to the specific hosts in the rules. This will make it so that only the hosts we permitted access to can communicate to the nodes. using DROP over REJECT may make it more difficult to diagnose issues, but it also helps keep the nodes from being visible. 
+   ```
+   sudo iptables -P INPUT DROP
    ```
