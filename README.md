@@ -254,4 +254,7 @@ Output:
    ```
    sudo apt-get install iptables-persistent
    ```
-
+8. The rules are saved to /etc/iptables/rules.v4 and /etc/iptables/rules.v6 by iptables-persistent, and then loaded from there on startup. In case changes must be made to the firewall rules, use iptables to change the rules to the desired configuration and then use iptables to save these changes to the file.
+   ```
+   sudo bash -c "iptables-save > /etc/iptables/rules.v4"
+   ```
