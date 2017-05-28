@@ -67,7 +67,7 @@ The raspi-config utility can be run with the comman `sudo raspi-config`. It will
 ### Create the Database and Schema
 1. Run the database setup script using the psql utility to generate the database, generate its tables, and fill them with some initial data:
    ```
-   psql -h [DB SERVER HOSTNAME/IP] -U postgres -p 5432 -f db\_creation\_script.sql
+   psql -h [DB SERVER HOSTNAME/IP] -U postgres -p 5432 -f db_creation_script.sql
    ```
 
 ## Set Up the Hub API
@@ -98,7 +98,7 @@ While developing with Flask it is possible to launch an application by executing
    ```
 6. Enable the site in apache.
    ```
-   sudo a2ensite home\_automation_platform.conf
+   sudo a2ensite home_automation_platform.conf
    ```
 7. Reload the `apache2` service.
    ```
@@ -107,7 +107,7 @@ While developing with Flask it is possible to launch an application by executing
 8. At this point the app should be running and handling requests. Try testing it by using curl to send it some information. 
    For Example:
    ```
-   curl -H "Content-Type: application/json" -X POST -d '[ {"value":72, "unit\_id":1}, {"value":990, "unit\_id":2}, { "value":60, "unit\_id":3} ]' http://192.168.1.200/sensor_records/1
+   curl -H "Content-Type: application/json" -X POST -d '[ {"value":72, "unit_id":1}, {"value":990, "unit_id":2}, { "value":60, "unit_id":3} ]' http://192.168.1.200/sensor_records/1
 
    ```
 
@@ -195,12 +195,12 @@ Setting up SSH keys and turning off password authentication greatly inceases sec
 2. There should be two files in the ~/.ssh folder: id\_rsa and id\_rsa.pub. Save these files somewhere safe.
 3. The id_rsa file is the private key; only put this key in the .ssh folder on computers you want to use to SSH from. Do not allow anyone else to have the id\_rsa file. Once copied to a new machine the permissions need to be set as follows.
    ```
-   sudo chmod 0644 ~/.ssh/id\_rsa
+   sudo chmod 0644 ~/.ssh/id_rsa
    ```
 4. Copy the contents of the id\_rsa.pub file, and add them to the ~/.ssh/authorized\_keys file on any Raspberry Pi you want to be able to SSH into using keys. 
 5. Make sure this line is uncommented in the /etc/ssh/sshd\_config file.
    ```
-   AuthorizedKeysFile      %h/.ssh/authorized\_keys
+   AuthorizedKeysFile      %h/.ssh/authorized_keys
    ```
 6. In the /etc/ssh/sshd_config file uncomment this line and change yes to no to disable password authentication or simply add the line below to the file. 
    ```
