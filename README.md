@@ -262,5 +262,5 @@ Output:
 9. In the future, when running updates the catch-all deny rule must be disabled. The iptables rules can be displayed with line numbers; the rule can be deleted by line number. In this example the line number for the catch-all rule is 6.
    ```
    sudo iptables -L -v --line-numbers
-   sudo iptables -A INPUT -D 6
+   sudo iptables -D INPUT 6
    ```
