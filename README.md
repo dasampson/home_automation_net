@@ -247,15 +247,20 @@ Output:
    ```
    sudo iptables -A INPUT -i lo -j ACCEPT
    ```
-6. Add one final catch-all rule to reject any other communications not caught by the above rules.
-   ```
-   sudo iptables -A INPUT -j REJECT
-   ```
-7. By default iptables only writes changes to running memory, which is flushed on reboot. In order to make these firewall rules stick around, install iptables-persistent. As part of the install process it will ask to save the current rules. Select "yes" and hit enter for v4 and v6 rules.
+6. By default iptables only writes changes to running memory, which is flushed on reboot. In order to make these firewall rules stick around, install iptables-persistent. As part of the install process it will ask to save the current rules. Select "yes" and hit enter for v4 and v6 rules.
    ```
    sudo apt-get install iptables-persistent
+   ```
+7. Add one final catch-all rule to reject any other communications not caught by the above rules.
+   ```
+   sudo iptables -A INPUT -j REJECT
    ```
 8. The rules are saved to /etc/iptables/rules.v4 and /etc/iptables/rules.v6 by iptables-persistent, and then loaded from there on startup. In case changes must be made to the firewall rules, use iptables to change the rules to the desired configuration and then use iptables to save these changes to the file.
    ```
    sudo bash -c "iptables-save > /etc/iptables/rules.v4"
+   ```
+9. In the future, when running updates the catch-all deny rule must be disabled. The iptables rules can be displayed with line numbers; the rule can be deleted by line number. In this example the line number for the catch-all rule is 6.
+   ```
+   sudo iptables -L -v --line-numbers
+   sudo iptables -A INPUT -D 6
    ```
