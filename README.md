@@ -215,6 +215,7 @@ Setting up SSH keys and turning off password authentication greatly inceases sec
 ### Set Up iptables
 Iptables is the firewall packaged with Raspbian and it has wide open permissions by default. It has three chains: one for incoming, outgoing, and another for forwarded. We will use this to restrict access to the nodes, since everything will be centralized at the hub node. Make sure the same configuration is made on every node aside from the hub.
 1. Ensure that there are no rules in place. If there are existing rules and policies ensure that they do not block the changes here. If nothing has been set up everything should be allowed by default.
+
 Command:
    ```
    sudo iptables -L -v
