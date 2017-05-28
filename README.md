@@ -246,7 +246,12 @@ Output:
    ```
    sudo iptables -A INPUT -i lo -j ACCEPT
    ```
-6. Change the policy for incoming to DROP so that iptables only allows access to the specific hosts in the rules. This will make it so that only the hosts we permitted access to can communicate to the nodes. using DROP over REJECT may make it more difficult to diagnose issues, but it also helps keep the nodes from being visible. 
+6. Add one final catch-all rule to reject any other communications not caught by the above rules.
    ```
-   sudo iptables -P INPUT DROP
+   sudo iptables -A INPUT -j REJECT
    ```
+7. By default iptables only writes changes to running memory, which is flushed on reboot. In order to make these firewall rules stick around, install iptables-persistent. As part of the install process it will ask to save the current rules. Select "yes" and hit enter for v4 and v6 rules.
+   ```
+   sudo apt-get install iptables-persistent
+   ```
+
