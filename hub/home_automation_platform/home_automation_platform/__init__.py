@@ -1,13 +1,14 @@
 #!/usr/bin/python
 
 from flask import Flask, request, Response
+import requests
 import psycopg2
 import json
 
 app = Flask(__name__)
 
 # Settings for Database calls
-db_host = ''
+db_host = 'automation-db'
 db_port = '5432'
 db_name = 'automation_data'
 db_user = 'postgres'
@@ -36,10 +37,9 @@ def log_sensor_record(node_id):
 @app.route('/event_records/<int:node_id>', methods=['POST'])
 def log_event_record(node_id):
     content = request.get_data()
-    records = json.loads(content)
+    record = json.loads(content)
 
-    for record in records:
-        run_db_query("INSERT INTO event_records VALUES (DEFAULT, {0}, '{1}', '{2}');".format(record.get('event_id'), timestamp, node_id))
+    run_db_query("INSERT INTO event_records VALUES (DEFAULT, {0}, '{1}', '{2}');".format(record.get('event_id'), timestamp, node_id))
 
     resp = Response('{ "status":"success" }', status=200, mimetype='application/json')
     return resp

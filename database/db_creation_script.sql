@@ -64,7 +64,7 @@ CREATE TABLE sensor_records
 CREATE TABLE event_records
 (
     event_record_uuid uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
-    event_id uuid NOT NULL,
+    event_id INTEGER NOT NULL,
     event_record_timestamp timestamp WITH TIME ZONE NOT NULL DEFAULT current_timestamp,
     node_id INTEGER NOT NULL,
     FOREIGN KEY (node_id) REFERENCES nodes (node_id)
@@ -101,7 +101,9 @@ INSERT INTO nodes VALUES
 (DEFAULT, 'Garage Door Controller', 2, 3);
 
 INSERT INTO events VALUES
-(DEFAULT, 'Garage Opened', 'Garage door has been opened.', 4),
-(DEFAULT, 'Garage Closed', 'Garage door has been closed.', 4),
-(DEFAULT, 'Garage Open Initiated', 'Garage door open has been initiated by controller.', 4),
-(DEFAULT, 'Garage Close Initiated', 'Garage door close has been initiated by controller.', 4);
+(1, 'Garage Opened', 'Garage door has been opened.', 4),
+(2, 'Garage Closed', 'Garage door has been closed.', 4),
+(3, 'Garage Open Initiated', 'Garage door open has been initiated by controller.', 4),
+(4, 'Garage Close Initiated', 'Garage door close has been initiated by controller.', 4),
+(5, 'Garage Open Failed', 'Garage door is already open.', 2),
+(6, 'Garage Close Failed', 'Garage door is already closed.', 2);
