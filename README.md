@@ -218,7 +218,7 @@ Iptables is the firewall packaged with Raspbian and it has wide open permissions
 
 Command:
    ```
-   sudo iptables -L -v
+   sudo iptables -L -v -n
    ```
 Output:
    ```
@@ -261,6 +261,10 @@ Output:
    ```
 9. In the future, when running updates the catch-all deny rule must be disabled. The iptables rules can be displayed with line numbers; the rule can be deleted by line number. In this example the line number for the catch-all rule is 6.
    ```
-   sudo iptables -L -v --line-numbers
+   sudo iptables -L -v -n --line-numbers
    sudo iptables -D INPUT 6
+   ```
+10. At this point edit the ssh configuration file /etc/ssh/sshd_config and add this line. Without this line it will take longer to login via SSH because it will try to resolve the hostname.
+   ```
+   UseDNS no
    ```
