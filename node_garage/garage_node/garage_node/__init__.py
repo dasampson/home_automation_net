@@ -9,7 +9,7 @@ import time
 app = Flask(__name__)
 
 NODE_ID = '3'
-HUB_HOST = 'automation-hub'
+HUB_HOST = 'https://automation-hub'
 
 PIN_RELAY = 23
 PIN_REEDSWITCH = 18
@@ -53,7 +53,7 @@ def garage_close():
         resp = Response(status=304, mimetype='application/json')
         log_message = { "event_id":6 }
 
-    log_post = requests.post("http://{0}/event_records/{1}".format(HUB_HOST, NODE_ID), json=log_message)
+    log_post = requests.post("{0}/event_records/{1}".format(HUB_HOST, NODE_ID), json=log_message)
     return resp
 
 @app.route('/garage/status', methods=['GET'])
