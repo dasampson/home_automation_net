@@ -264,7 +264,47 @@ Output:
    sudo iptables -L -v -n --line-numbers
    sudo iptables -D INPUT 6
    ```
-10. At this point edit the ssh configuration file /etc/ssh/sshd_config and add this line. Without this line it will take longer to login via SSH because it will try to resolve the hostname.
+10. Edit the ssh configuration file /etc/ssh/sshd_config and add this line. Without this line it will take longer to login via SSH because it will try to resolve the hostname.
    ```
    UseDNS no
+   ```
+
+### Set Up SSL for Apache
+By enabling SSL in Apache all the web traffic to and from the nodes will be encrypted, as well as any traffic between a browser and the hub node. Part of the value of SSL certificates is in the trust that you got to the rigth server. Being able to see green whenever the console is accessed is a good indicator the real and correct website is being accessed. 
+1. Choose hostnames for each node and set them by editing the /etc/hostname file. There should be one line at the top of the file; change this to the desired hostname. 
+2. On the hub node edit the /etc/hosts file and add entries for each node. For example:
+   ```
+   127.0.0.1       localhost
+   ::1             localhost ip6-localhost ip6-loopback
+   ff02::1         ip6-allnodes
+   ff02::2         ip6-allrouters
+   
+   127.0.1.1       automation-hub
+   192.168.1.11    automation-db
+   192.168.1.12    automation-office
+   192.168.1.13    automation-backyard
+   192.168.1.14    automation-garage
+   ```
+3. On each node aside from the database and hub, add an entry to the hosts file for the hub node.
+   ```
+   192.168.1.10    automation-hub
+   ```
+4. On each node: Make sure the entry in the hosts file for 127.0.1.1 matches the hostname set in /etc/hostname. Reboot each Raspberry Pi to apply the change.
+5. Make the folder /etc/apache2/ssl to store the certificate file and the key file.
+6. Run this command to generate the self-signed certificate and deposit the files in the right folder. At this point in the process it may be prudent to get certificates signed by a widely trusted certificate authority for the hub, rather than using self-signed certificates. 
+   ```
+   sudo openssl req -x509 -nodes -days 1095 -newkey rsa:2048 -out /etc/apache2/ssl/server.crt -keyout /etc/apache2/ssl/server.key
+   ```
+7. Activate the SSL module.
+   ```
+   sudo a2enmod ssl
+   ```
+8. The next step is to get the configuration loaded. This can either be done by replacing the contents of the original conf file in /etc/apache2/sites-available/ or by copying the conf file with -ssl appended to the name and then making that site available. Directions for that process are included in the set-up steps for Apache.
+9. Restart the apache service.
+   ```
+   sudo service apache2 restart
+   ```
+10. Troubleshooting the apache configuration can be done with this command. It is useful if apache won't start.
+   ```
+   apachectl configtest
    ```
