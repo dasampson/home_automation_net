@@ -1,12 +1,12 @@
 #!/usr/bin/python
 
-from flask import Flask, request, Response
+from flask import Flask, request, Response, Blueprint
 import json
 import BME280
 
-app = Flask(__name__)
+api_sensors = Blueprint('api_sensors', __name__)
 
-@app.route('/sensors/all', methods=['GET'])
+@api_sensors.route('/sensors/all', methods=['GET'])
 def sensors_all():
     temperature, pressure, humidity = BME280.readAllSensors()
 
@@ -16,7 +16,7 @@ def sensors_all():
     
     return resp
 
-@app.route('/sensors/temperature', methods=['GET'])
+@api_sensors.route('/sensors/temperature', methods=['GET'])
 def sensor_temperature():
     temperature, pressure, humidity = BME280.readAllSensors()
 
@@ -26,7 +26,7 @@ def sensor_temperature():
     
     return resp
 
-@app.route('/sensors/pressure', methods=['GET'])
+@api_sensors.route('/sensors/pressure', methods=['GET'])
 def sensor_pressure():
     temperature, pressure, humidity = BME280.readAllSensors()
 
@@ -36,7 +36,7 @@ def sensor_pressure():
     
     return resp
 
-@app.route('/sensors/humidity', methods=['GET'])
+@api_sensors.route('/sensors/humidity', methods=['GET'])
 def sensor_humidity():
     temperature, pressure, humidity = BME280.readAllSensors()
 
@@ -46,5 +46,3 @@ def sensor_humidity():
     
     return resp
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0',debug=True)

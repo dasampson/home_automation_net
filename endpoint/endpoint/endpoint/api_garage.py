@@ -1,12 +1,12 @@
 #!/usr/bin/python
 
-from flask import Flask, request, Response
+from flask import Flask, request, Response, Blueprint
 import requests
 import json
 import RPi.GPIO as GPIO
 import time
 
-app = Flask(__name__)
+api_garage = Blueprint('api_garage', __name__)
 
 NODE_ID = '3'
 HUB_HOST = 'https://automation-hub'
@@ -30,7 +30,7 @@ def door_status_open():
     else:
         return False
 
-@app.route('/garage/open', methods=['PUT'])
+@api_garage.route('/garage/open', methods=['PUT'])
 def garage_open():
     if not door_status_open():
         garage_activate()
@@ -43,7 +43,7 @@ def garage_open():
     log_post = requests.post("http://{0}/event_records/{1}".format(HUB_HOST, NODE_ID), json=log_message)
     return resp
 
-@app.route('/garage/close', methods=['PUT'])
+@api_garage.route('/garage/close', methods=['PUT'])
 def garage_close():
     if door_status_open():
         garage_activate()
@@ -56,7 +56,7 @@ def garage_close():
     log_post = requests.post("{0}/event_records/{1}".format(HUB_HOST, NODE_ID), json=log_message)
     return resp
 
-@app.route('/garage/status', methods=['GET'])
+@api_garage.route('/garage/status', methods=['GET'])
 def garage_status():
     if door_status_open():
         resp = Response('{ "status":"open" }', status=200, mimetype='application/json')
@@ -65,5 +65,3 @@ def garage_status():
 
     return resp
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0',debug=True)

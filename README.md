@@ -111,7 +111,7 @@ While developing with Flask it is possible to launch an application by executing
 
    ```
 
-## Set Up the Sensor for an Environment Node
+## Set Up the Sensor
 ---
 
 ### Install Required Libraries
@@ -150,37 +150,44 @@ While developing with Flask it is possible to launch an application by executing
    ```
 7. Make sure to update the BME280.py file with the i2c device address.
 
-## Set Up the Node API
+## Set Up the Endpoint API
 ---
 
 ### Install Required Dependencies
-1. Install Apache web server, the WSGI module, and flask.
+Install Apache web server, the WSGI module, and flask.
    ```
    sudo apt-get install apache2 python-flask libapache2-mod-wsgi
    ```
-2. Move the whichever node folder (e.g. garage\_node, environment\_node) to /var/www/.
-3. Move the .conf file for the node into /etc/apache2/sites-available/.
-4. Add the www-data user to the gpio and i2c groups. Without this step the user running apache will not be able to access the GPIO pins.
+
+### Copy Files and Set Permissions
+1. Move the endpoint folder containing endpoint.wsgi to /var/www/. The folder structure should look like:
+   ```
+   /var/www/endpoint/endpoint.wsgi
+   /var/www/endpoint/endpoint/\_\_init\_\_.py
+   /var/www/endpoint/endpoint/api_sensors.py
+   /var/www/endpoint/endpoint/api_garage.py
+   /var/www/endpoint/endpoint/BME280.py
+   ```
+2. Move endpoint.conf into /etc/apache2/sites-available/.
+3. Add the www-data user to the gpio and i2c groups to allow apache to access the GPIO pins and run the BME280 sensor.
    ```
    sudo adduser www-data gpio
    sudo adduser www-data i2c
    ```
-5. Open /etc/apache2/sites-available/000-default.conf and ensure that the virtual host is set to something besides port 80 since that is the port the app will run on.
-   Original:
+
+### Remove Default Sites and Activate the API
+1. Navigate to /etc/apache2/sites-available/ and delete 000-default.conf and default-ssl.conf.
+2. Disable the default site in apache.
    ```
-   <VirtualHost *:80>
+   sudo a2dissite 000-default.conf
    ```
-   Change to:
+3. Enable the endpoint api in apache. For example:
    ```
-   <VirtualHost *:8080>
+   sudo a2ensite endpoint.conf
    ```
-6. Enable the site in apache. For example:
+4. Reload the `apache2` service.
    ```
-   sudo a2ensite environment_node.conf
-   ```
-7. Reload the `apache2` service.
-   ```
-   sudo service apache2 reload
+   sudo service apache2 restart
    ```
 
 ## Security
