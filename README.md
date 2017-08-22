@@ -163,7 +163,7 @@ Install Apache web server, the WSGI module, and flask.
 1. Move the endpoint folder containing endpoint.wsgi to /var/www/. The folder structure should look like:
    ```
    /var/www/endpoint/endpoint.wsgi
-   /var/www/endpoint/endpoint/\_\_init\_\_.py
+   /var/www/endpoint/endpoint/__init__.py
    /var/www/endpoint/endpoint/api_sensors.py
    /var/www/endpoint/endpoint/api_garage.py
    /var/www/endpoint/endpoint/BME280.py
