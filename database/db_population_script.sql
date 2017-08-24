@@ -41,4 +41,4 @@ INSERT INTO events VALUES
 (3, 'Garage Open Initiated', 'Garage door open has been initiated by controller.', 4),
 (4, 'Garage Close Initiated', 'Garage door close has been initiated by controller.', 4),
 (5, 'Garage Open Failed', 'Garage door is already open.', 2),
-(6, 'Garage Close Failed', 'Garage door is already closed.', 2);
+(6, 'Garage Close Failed', 'Garage door is already closed.', 2

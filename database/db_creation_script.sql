@@ -1,3 +1,12 @@
+/*
+
+db_creation_script.sql
+
+This script creates all the necessary tables and key constraints for the 
+entire system.
+
+*/
+
 CREATE DATABASE automation_data;
 
 \c automation_data
