@@ -15,7 +15,7 @@ db_user = 'postgres'
 db_pass = ''
 timestamp = 'now()'
 
-def run_db_query(query):
+def db_insert(query):
     conn = psycopg2.connect(database=db_name, user=db_user, password=db_pass, host=db_host, port=db_port)
     cursor = conn.cursor()
     cursor.execute(query)
@@ -23,23 +23,44 @@ def run_db_query(query):
     cursor.close()
     conn.close()
 
-@app.route('/sensor_records/<int:node_id>', methods=['POST'])
-def log_sensor_record(node_id):
+def db_query(query):
+    conn = psycopg2.connect(database=db_name, user=db_user, password=db_pass, host=db_host, port=db_port)
+    cursor = conn.cursor()
+    cursor.execute(query)
+    data = cursor.fetchall()
+    conn.commit()
+    cursor.close()
+    conn.close()
+    return data
+
+@app.route('/', methods=['GET'])
+def helo():
+    resp = Response('Hello, World!', status=200, mimetype='text/plain')
+    return resp
+
+@app.route('/sensor_records', methods=['POST'])
+def log_sensor_record():
+    get_node_id = db_query("SELECT node_id FROM nodes WHERE node_ipaddress = '%s';" % request.remote_addr)
+    node_id = get_node_id[0][0]
+
     content = request.get_data()
     records = json.loads(content)
 
     for record in records:
-        run_db_query("INSERT INTO sensor_records VALUES (DEFAULT, {0:0.2f}, {1}, '{2}', '{3}');".format(record.get('value'), record.get('unit_id'), timestamp, node_id))
+        db_insert("INSERT INTO sensor_records VALUES (DEFAULT, {0:0.2f}, {1}, '{2}', '{3}');".format(record.get('value'), record.get('unit_id'), timestamp, node_id))
     
     resp = Response('{ "status":"success" }', status=200, mimetype='application/json')
     return resp
 
-@app.route('/event_records/<int:node_id>', methods=['POST'])
-def log_event_record(node_id):
+@app.route('/event_records', methods=['POST'])
+def log_event_record():
+    get_node_id = db_query("SELECT node_id FROM nodes WHERE node_ipaddress = '%s';" % request.remote_addr)
+    node_id = get_node_id[0][0]
+
     content = request.get_data()
     record = json.loads(content)
 
-    run_db_query("INSERT INTO event_records VALUES (DEFAULT, {0}, '{1}', '{2}');".format(record.get('event_id'), timestamp, node_id))
+    db_insert("INSERT INTO event_records VALUES (DEFAULT, {0}, '{1}', '{2}');".format(record.get('event_id'), timestamp, node_id))
 
     resp = Response('{ "status":"success" }', status=200, mimetype='application/json')
     return resp

@@ -242,36 +242,40 @@ Output:
    ```
    sudo iptables -P FORWARD DROP
    ```
-3. Add permitted access for incoming communications. Use this command for each device that will be used to connect. Replace the IP address below with the IP address or hostname of the device you will connect from. NOTE: Make sure to include the hub node. 
+3. Add a rule that allows any communications initiated by the node to succeed. Without this rule any incoming communication not from explicitly added IP addresses will be blocked.
+   ```
+   sudo iptables -I INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+   ```
+4. Add permitted access for incoming communications. Use this command for each device that will be used to connect. Replace the IP address below with the IP address or hostname of the device you will connect from. NOTE: Make sure to include the hub node. 
    ```
    sudo iptables -A INPUT -s 192.168.1.10 -j ACCEPT
    ```
-4. Add permitted access for the loopback address.
+5. Add permitted access for the loopback address.
    ```
    sudo iptables -A INPUT -s 127.0.0.1 -j ACCEPT
    ```
-5. Add permitted access for the loopback interface. 
+6. Add permitted access for the loopback interface. 
    ```
    sudo iptables -A INPUT -i lo -j ACCEPT
    ```
-6. By default iptables only writes changes to running memory, which is flushed on reboot. In order to make these firewall rules stick around, install iptables-persistent. As part of the install process it will ask to save the current rules. Select "yes" and hit enter for v4 and v6 rules.
+7. By default iptables only writes changes to running memory, which is flushed on reboot. In order to make these firewall rules stick around, install iptables-persistent. As part of the install process it will ask to save the current rules. Select "yes" and hit enter for v4 and v6 rules.
    ```
    sudo apt-get install iptables-persistent
    ```
-7. Add one final catch-all rule to reject any other communications not caught by the above rules.
+8. Add one final catch-all rule to reject any other communications not caught by the above rules.
    ```
    sudo iptables -A INPUT -j REJECT
    ```
-8. The rules are saved to /etc/iptables/rules.v4 and /etc/iptables/rules.v6 by iptables-persistent, and then loaded from there on startup. In case changes must be made to the firewall rules, use iptables to change the rules to the desired configuration and then use iptables to save these changes to the file.
+9. The rules are saved to /etc/iptables/rules.v4 and /etc/iptables/rules.v6 by iptables-persistent, and then loaded from there on startup. In case changes must be made to the firewall rules, use iptables to change the rules to the desired configuration and then use iptables to save these changes to the file.
    ```
    sudo bash -c "iptables-save > /etc/iptables/rules.v4"
    ```
-9. In the future, when running updates the catch-all deny rule must be disabled. The iptables rules can be displayed with line numbers; the rule can be deleted by line number. In this example the line number for the catch-all rule is 6.
+10. In the future, when running updates the catch-all deny rule must be disabled. The iptables rules can be displayed with line numbers; the rule can be deleted by line number. In this example the line number for the catch-all rule is 6.
    ```
    sudo iptables -L -v -n --line-numbers
    sudo iptables -D INPUT 6
    ```
-10. Edit the ssh configuration file /etc/ssh/sshd_config and add this line. Without this line it will take longer to login via SSH because it will try to resolve the hostname.
+11. Edit the ssh configuration file /etc/ssh/sshd_config and add this line. Without this line it will take longer to login via SSH because it will try to resolve the hostname.
    ```
    UseDNS no
    ```

@@ -8,7 +8,6 @@ import time
 
 api_garage = Blueprint('api_garage', __name__)
 
-NODE_ID = '3'
 HUB_HOST = 'https://automation-hub'
 
 PIN_RELAY = 23
@@ -40,7 +39,7 @@ def garage_open():
         resp = Response(status=304, mimetype='application/json')
         log_message = { "event_id":5 }
 
-    log_post = requests.post("http://{0}/event_records/{1}".format(HUB_HOST, NODE_ID), json=log_message)
+    log_post = requests.post("http://{0}/event_records".format(HUB_HOST), json=log_message)
     return resp
 
 @api_garage.route('/garage/close', methods=['PUT'])
@@ -53,7 +52,7 @@ def garage_close():
         resp = Response(status=304, mimetype='application/json')
         log_message = { "event_id":6 }
 
-    log_post = requests.post("{0}/event_records/{1}".format(HUB_HOST, NODE_ID), json=log_message)
+    log_post = requests.post("{0}/event_records".format(HUB_HOST), json=log_message)
     return resp
 
 @api_garage.route('/garage/status', methods=['GET'])

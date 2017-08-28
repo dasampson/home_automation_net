@@ -13,7 +13,7 @@ INSERT INTO lk_unit VALUES
 (3, '% RH', 'percent relative humidity');
 
 INSERT INTO lk_event_level VALUES
-(1, 'fat', 'Fatal'),
+(1, 'ftl', 'Fatal'),
 (2, 'err', 'Error'),
 (3, 'wrn', 'Warn'),
 (4, 'inf', 'Informational'),
