@@ -33,6 +33,11 @@ def db_query(query):
     conn.close()
     return data
 
+def get_node_id(ip_address)
+    get_node_id = db_query("SELECT node_id FROM nodes WHERE node_ipaddress = '%s';" % ip_address)
+    node_id = get_node_id[0][0]
+    return node_id
+
 @app.route('/', methods=['GET'])
 def helo():
     resp = Response('Hello, World!', status=200, mimetype='text/plain')
@@ -40,9 +45,7 @@ def helo():
 
 @app.route('/sensor_records', methods=['POST'])
 def log_sensor_record():
-    get_node_id = db_query("SELECT node_id FROM nodes WHERE node_ipaddress = '%s';" % request.remote_addr)
-    node_id = get_node_id[0][0]
-
+    node_id = get_node_id(request.remote_addr)
     content = request.get_data()
     records = json.loads(content)
 
@@ -54,9 +57,7 @@ def log_sensor_record():
 
 @app.route('/event_records', methods=['POST'])
 def log_event_record():
-    get_node_id = db_query("SELECT node_id FROM nodes WHERE node_ipaddress = '%s';" % request.remote_addr)
-    node_id = get_node_id[0][0]
-
+    node_id = get_node_id(request.remote_addr)
     content = request.get_data()
     record = json.loads(content)
 
